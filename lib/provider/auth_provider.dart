@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 class AuthProvider extends ChangeNotifier {
   // navigate to homepage
   Future<void> navigateToNextScreenAfterDelay(context) async {
-    // Future.delayed(Duration(seconds: 2), () {
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => HomeScreen()),
-    //   );
-    // });
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    });
   }
 }

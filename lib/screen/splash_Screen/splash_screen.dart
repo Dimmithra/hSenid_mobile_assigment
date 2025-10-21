@@ -30,10 +30,22 @@ class _SplashScreenState extends State<SplashScreen> {
         appBarBacgroundColor: kAppBarBackgroundColor,
         backgroundColor: kBackgroundColor,
         body: Center(
-          child: CommonLable(
-            labelName: "Welcome",
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(
+                image: AssetImage("assets/images/splas_screeen.png"),
+                fit: BoxFit.cover,
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.width / 2,
+              ),
+              CommonLable(
+                labelName: "Welcome",
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                enableNotoSerif: true,
+              )
+            ],
           ),
         ));
   }
