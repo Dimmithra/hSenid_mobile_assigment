@@ -42,6 +42,7 @@ class Data {
 class Countries {
   String? code;
   String? emoji;
+  String? capital;
   String? currency;
   Continent? continent;
   List<Languages>? languages;
@@ -50,6 +51,7 @@ class Countries {
   Countries(
       {this.code,
       this.emoji,
+      this.capital,
       this.currency,
       this.continent,
       this.languages,
@@ -58,6 +60,7 @@ class Countries {
   Countries.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     emoji = json['emoji'];
+    capital = json['capital'];
     currency = json['currency'];
     continent = json['continent'] != null
         ? new Continent.fromJson(json['continent'])
@@ -75,6 +78,7 @@ class Countries {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['code'] = this.code;
     data['emoji'] = this.emoji;
+    data['capital'] = this.capital;
     data['currency'] = this.currency;
     if (this.continent != null) {
       data['continent'] = this.continent!.toJson();
