@@ -4,7 +4,6 @@ import 'package:country_app/utils/main_body.dart';
 import 'package:country_app/widgets/common_lable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/custom_api.dart';
 
 class CountryDetailScreen extends StatefulWidget {
   final String code;
