@@ -1,6 +1,7 @@
 import 'package:country_app/provider/auth_provider.dart';
 import 'package:country_app/utils/color_const.dart';
 import 'package:country_app/utils/main_body.dart';
+import 'package:country_app/widgets/common_lable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,9 +27,26 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return MainBody(
-      appBarBacgroundColor: kAppBarBackgroundColor,
-      backgroundColor: kBackgroundColor,
-      body: SingleChildScrollView(),
-    );
+        appBarBacgroundColor: kAppBarBackgroundColor,
+        backgroundColor: kBackgroundColor,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(
+                image: AssetImage("assets/images/splas_screeen.png"),
+                fit: BoxFit.cover,
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.width / 2,
+              ),
+              CommonLable(
+                labelName: "Welcome",
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                enableNotoSerif: true,
+              )
+            ],
+          ),
+        ));
   }
 }
