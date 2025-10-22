@@ -4,6 +4,7 @@ import 'package:country_app/model/country_detail_model.dart';
 import 'package:country_app/services/custom_api.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev;
+import 'dart:async';
 
 class HomeProvider extends ChangeNotifier {
   final GraphQLService graphqlService = GraphQLService();
@@ -46,7 +47,7 @@ class HomeProvider extends ChangeNotifier {
     ''';
 
     try {
-      final result = await graphqlService.runQuery(getAllCountries);
+      final result = await graphqlService.runQuery(context, getAllCountries);
       final data = result.data?['countries'] ?? [];
       final wrapped = {
         "data": {"countries": data}
@@ -139,8 +140,8 @@ class HomeProvider extends ChangeNotifier {
         }
       }
     ''';
-      final result =
-          await graphqlService.runQuery(query, variables: {"code": code});
+      final result = await graphqlService
+          .runQuery(context, query, variables: {"code": code});
       final data = result.data?['country'];
       if (data != null) {
         selectedCountry = Countries.fromJson(data);
@@ -156,17 +157,53 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  void searchCountriesDetails(String query) {
-    if (query.isEmpty) {
-      filteredCountries.clear();
-    } else {
-      filteredCountries = allCountries.where((country) {
-        final name = country.name?.toLowerCase() ?? '';
-        final continent = country.continent?.name?.toLowerCase() ?? '';
-        return name.contains(query.toLowerCase()) ||
-            continent.contains(query.toLowerCase());
-      }).toList();
-    }
-    notifyListeners();
+  Timer? _debounce;
+  String _lastSearchQuery = '';
+  void searchCountriesDetails(context, {required String query}) async {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      _lastSearchQuery = query.trim();
+      if (_lastSearchQuery.isEmpty) {
+        filteredCountries.clear();
+      } else {
+        final lowerQuery = _lastSearchQuery.toLowerCase();
+        filteredCountries = visibleCountries.where((country) {
+          final name = country.name?.toLowerCase() ?? '';
+          final continent = country.continent?.name?.toLowerCase() ?? '';
+          final capital = country.capital?.toLowerCase() ?? '';
+          return name.contains(lowerQuery) ||
+              continent.contains(lowerQuery) ||
+              capital.contains(lowerQuery);
+        }).toList();
+      }
+      notifyListeners();
+    });
   }
+
+  // Future<void> searchCountriesDetails(BuildContext context) async {
+  //   try {
+  //     loadinCountryList = true;
+  //     notifyListeners();
+
+  //     final result =
+  //         await graphqlService.runQuery(context, searchaFeildController.text);
+
+  //     if (result.data != null) {
+  //       final List<dynamic> data = result.data!['countries'];
+  //       filteredCountries =
+  //           data.map((json) => Countries.fromJson(json)).toList();
+  //       dev.log(filteredCountries.length.toString());
+  //     } else {
+  //       filteredCountries = [];
+  //     }
+
+  //     loadinCountryList = false;
+  //     notifyListeners();
+  //   } catch (e) {
+  //     loadinCountryList = false;
+  //     filteredCountries = [];
+  //     notifyListeners();
+  //     print("Error searching countries: $e");
+  //   }
+  // }
 }
